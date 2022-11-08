@@ -45,7 +45,7 @@ class User extends Authenticatable
     ];
 
     // Relacion de uno a muchos
-    public fuction posts()
+    public function posts()
     {
         return $this->hasMany('App/Post');
     }

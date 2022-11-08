@@ -11,8 +11,8 @@ class Category extends Model
     protected $talbe = 'categories';
 
     // Relacion de uno a muchos
-    public fuction posts()
+    public function posts()
     {
-        return $this->hasMany('App\Post');
+        return $this->hasMany('App\Models\Post');
     }
 }
