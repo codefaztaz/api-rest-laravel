@@ -6,5 +6,8 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    //
+    public function pruebas()
+    {
+        return "controlador de categoria";
+    }
 }

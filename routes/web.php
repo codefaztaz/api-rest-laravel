@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PruebasController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,8 +16,26 @@ use App\Http\Controllers\PruebasController;
 |
 */
 
+
+// test routes
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/test-orm', [PruebasController::class, 'testOrm']);
+
+
+// API routes
+
+// test routes
+
+Route::get('/usuario/pruebas', [UserController::class, 'pruebas'] );
+Route::get('/categoria/pruebas', [UserController::class, 'pruebas'] );
+Route::get('/post/pruebas', [UserController::class, 'pruebas'] );
+
+// User controller routes
+
+Route::get('token', [UserController::class, 'showToken']);
+Route::post('api/register', [UserController::class, 'register']);
+Route::post('api/login',[UserController::class, 'login']);
