@@ -168,30 +168,53 @@ class UserController extends Controller
         $jwtAuth = new \JwtAuth();
         $checkToken = $jwtAuth->checkToken($token);
 
-        if($checkToken)
-        {
-            // recopger los datos por post
-            $json = $request->input('json', null);
-            $params_array = json_decode($json, true);
+        // recopger los datos por post
+        $json = $request->input('json', null);
+        $params_array = json_decode($json, true);
+        var_dump($params_array);
 
-        
+        var_dump($checkToken);
+     
+        if($checkToken && !empty($params_array))
+        {
+          
+       
+
+      
+            
+            // sacar usuario identificado
+            $user = $jwtAuth->checkToken($token, true);
           
             // validar datos
             $validate = \Validator::make($params_array, [
 
                 'name'    =>    'required|alpha',
                 'surname' =>    'required|alpha',
-                'email'   =>    'required|email|unique:users',  // comprobar si el usuario existe ya (duplicado)
-                'password'=>    'required'
+                'email'   =>    'required|email|unique:users'.$user->sub // comprobar si el usuario existe ya (duplicado)
+        
             ]);
     
 
 
             // quitar los campos que no quiero actualizar
+            unset($params_array['id']);
+            unset($params_array['role']);
+            unset($params_array['password']);
+            unset($params_array['created_at']);
+            unset($params_array['remember_token']);
 
             // actualizar usuario en la bd
+            $user_update = User::where('id', $user->sub)->update($params_array);
 
             //devolver array con resultado
+            $data = array(
+
+                'status' => 'success',
+                'code' => 200,
+                'user' => $user_update
+                
+            );
+            
         }
         else
         {
