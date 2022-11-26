@@ -170,13 +170,41 @@ class UserController extends Controller
 
         if($checkToken)
         {
-            echo "<h1> login correcto</h1>";
+            // recopger los datos por post
+            $json = $request->input('json', null);
+            $params_array = json_decode($json, true);
+
+        
+          
+            // validar datos
+            $validate = \Validator::make($params_array, [
+
+                'name'    =>    'required|alpha',
+                'surname' =>    'required|alpha',
+                'email'   =>    'required|email|unique:users',  // comprobar si el usuario existe ya (duplicado)
+                'password'=>    'required'
+            ]);
+    
+
+
+            // quitar los campos que no quiero actualizar
+
+            // actualizar usuario en la bd
+
+            //devolver array con resultado
         }
         else
         {
-            echo "<h1> login incorrecto</h1>";
+            $data = array(
+
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'el usuario no está identificado'
+                
+            );
+        
         }
-        die();
+        return response()->json($data, $data['code']);
     }
 }
 
