@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\User;
+
 
 class UserController extends Controller
 {
@@ -235,9 +237,27 @@ class UserController extends Controller
         // recoger datos de la peiticion
         $image = $request->file('file0');
 
+        // validacion de imagen
+        $validate = \Validator::make($request->all(),[
+            'file0' =>'required|image|mimes:jpg,jpeg,png,gif'
+        ]);
 
         // gardar  la imagen
-        if($image)
+        if(!$image || $validate->fails())
+        {
+            $data = array(
+
+                'status' => 'error',
+                'code' => 400,
+                'user' => 'la imagen no se ha guardado'
+                
+            );
+            
+            
+
+            
+        }
+        else
         {
             $image_name = time().$image->getClientOriginalName();
             \Storage::disk('users')->put($image_name, \File::get($image));
@@ -249,18 +269,6 @@ class UserController extends Controller
                 'image' => $image_name
                 
             );
-
-            
-        }
-        else
-        {
-            $data = array(
-
-                'status' => 'error',
-                'code' => 400,
-                'user' => 'la imagen no se ha guardado'
-                
-        );
             
         }
 
@@ -269,6 +277,57 @@ class UserController extends Controller
 
         return response()->json($data, $data['code']);
 
+    }
+
+    public function getImage($filename)
+    {
+        $isset = \Storage::disk('users')->exists($filename);
+        if($isset)
+        {
+            $file  = \Storage::disk('users')->get($filename);
+            return new Response($file, 200);
+
+        }
+        else 
+        {
+            $data = array(
+
+                'status' => 'error',
+                'code' => 400,
+                'user' => 'la imagen no se ha guardado'
+                
+            );
+            return response()->json($data, $data['code']);
+        }
+       
+    }
+
+    public function detail($id)
+    {
+
+        $user = User::find($id);
+
+        if(is_object($user))
+        {
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'user' => $user
+            );
+        }
+        else 
+        {
+            $data = array(
+
+                'status' => 'error',
+                'code' => 404,
+                'user' => 'el usuario no existe'
+                
+            );
+            
+
+        }
+        return response()->json($data, $data['code']);
     }
 }
 

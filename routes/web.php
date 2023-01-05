@@ -42,3 +42,5 @@ Route::post('api/register', [UserController::class, 'register']);
 Route::post('api/login',[UserController::class, 'login']);
 Route::put('api/user/update',[UserController::class, 'update']);
 Route::post('api/user/upload',[UserController::class, 'upload'])->middleware(['api.auth']);
+Route::get('api/user/avatar/{filename}', [UserController::class, 'getImage']);
+Route::get('api/user/detail/{id}', [UserController::class, 'detail']);
