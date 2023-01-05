@@ -229,6 +229,47 @@ class UserController extends Controller
         }
         return response()->json($data, $data['code']);
     }
+
+    public function upload(Request $request)
+    {
+        // recoger datos de la peiticion
+        $image = $request->file('file0');
+
+
+        // gardar  la imagen
+        if($image)
+        {
+            $image_name = time().$image->getClientOriginalName();
+            \Storage::disk('users')->put($image_name, \File::get($image));
+
+            $data = array(
+
+                'status' => 'success',
+                'code' => 200,
+                'image' => $image_name
+                
+            );
+
+            
+        }
+        else
+        {
+            $data = array(
+
+                'status' => 'error',
+                'code' => 400,
+                'user' => 'la imagen no se ha guardado'
+                
+        );
+            
+        }
+
+        // devolver el resultado
+        
+
+        return response()->json($data, $data['code']);
+
+    }
 }
 
 

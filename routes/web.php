@@ -5,6 +5,7 @@ use App\Http\Controllers\PruebasController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
+use App\Http\Middleware\ApiAuthMiddleware;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,3 +41,4 @@ Route::get('token', [UserController::class, 'showToken']);
 Route::post('api/register', [UserController::class, 'register']);
 Route::post('api/login',[UserController::class, 'login']);
 Route::put('api/user/update',[UserController::class, 'update']);
+Route::post('api/user/upload',[UserController::class, 'upload'])->middleware(['api.auth']);
