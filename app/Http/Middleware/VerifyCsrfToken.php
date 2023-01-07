@@ -16,6 +16,6 @@ class VerifyCsrfToken extends Middleware
         'http://localhost:8000/api/login',
         'http://localhost:8000/api/user/update',
         'http://localhost:8000/api/user/upload',
-        'http://localhost:8000/api/category/index'
+        'http://localhost:8000/api/category'
     ];
 }

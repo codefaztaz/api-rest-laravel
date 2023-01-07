@@ -9,6 +9,10 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('api.auth', ['except' =>['index', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -43,7 +47,54 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // recoger los datos por post
+        $json = $request->input('json', null);
+        $params_array = json_decode($json, true); // con true pasamos un array
+
+        if(!empty($params_array))
+        {
+                //validar los datos
+            $validate = \Validator::make($params_array, [
+                'name' => 'required'
+            ]);
+
+            // guardar la categoria
+            if($validate->fails())
+            {
+                $data = [
+                    'code' => 400,
+                    'status' => 'error',
+                    'message' => 'No se ha guardado la categoria'
+                ];
+            }
+            else 
+            {
+                $category = new Category();
+                $category->name = $params_array['name'];
+                $category->save();
+
+                $data = [
+                    'code' => 200,
+                    'status' => 'succes',
+                    'category' => $category
+                ];
+            }
+
+
+        }
+        else
+        {
+            $data = [
+                'code' => 400,
+                'status' => 'error',
+                'message' => 'No has enviado ninguna categoria'
+            ];
+
+        }
+
+        
+        // devolver resultado
+        return response()->json($data, $data['code']);
     }
 
     /**
@@ -54,7 +105,30 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::find($id);
+
+        if(is_object($category))
+        {
+            $data = [
+                'code' => 200,
+                'status' =>'success',
+                'categories' => $category
+            ];
+            
+
+        }
+        else 
+        {
+            $data = [
+                'code' => 404,
+                'status' =>'error',
+                'message' => 'La categoria no existe'
+            ];
+            
+
+        }
+
+        return response()->json($data, $data['code']);
     }
 
     /**
