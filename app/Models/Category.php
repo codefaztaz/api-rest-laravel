@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-    protected $talbe = 'categories';
+    protected $table = 'categories';
 
     // Relacion de uno a muchos
     public function posts()
