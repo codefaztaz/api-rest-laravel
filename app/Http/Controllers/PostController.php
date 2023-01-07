@@ -195,22 +195,38 @@ class PostController extends Controller
              unset($params_array['created_at']);
              unset($params_array['user_id']);
              unset($params_array['user']);
+
+            // conseguir usuario identificado
+            $user = $this->getIdentity($request);
  
              // actualizar el registro(categoria)
-             $post = Post::where('id', $id)->updateOrCreate($params_array);
- 
-             $data = [
-                 'code' => 200,
-                 'status' =>'success',
-                 'post' => $post,
-                 'post' => $params_array
-             ];
- 
- 
-             // devolver los datos
+             // buscar el registro
+             $post = Post::where('id', $id)->where('user_id', $user->sub)->first();
+
+             if(!empty($post) && is_object($post))
+             {
+                $where = [
+                    'id' => $id,
+                    'user_id' => $user->sub
+                 ];
+    
+                 $post = Post::updateOrCreate($where, $params_array);
+     
+                 $data = [
+                     'code' => 200,
+                     'status' =>'success',
+                     'post' => $post,
+                     'post' => $params_array
+                 ];
+     
+
+
+             }
+
+
          }
     
- 
+         // devolver los datos
          return response()->json($data, $data['code']);
     }
 
