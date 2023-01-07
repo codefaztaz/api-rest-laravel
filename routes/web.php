@@ -48,3 +48,7 @@ Route::get('api/user/detail/{id}', [UserController::class, 'detail']);
 // category controller routes
 
 Route::resource('api/category', CategoryController::class);
+
+// post controller routes
+
+Route::resource('api/post', PostController::class);
