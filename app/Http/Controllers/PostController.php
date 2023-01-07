@@ -55,9 +55,7 @@ class PostController extends Controller
 
         if(!empty($params_array))
         {
-            $jwtAuth = new JwtAuth();
-            $token = $request->header('Authorization', null);
-            $user = $jwtAuth->checkToken($token, true);
+            $user = $this->getIdentity($request);
                 //validar los datos
             $validate = \Validator::make($params_array, [
                 'title' => 'required',
@@ -224,8 +222,11 @@ class PostController extends Controller
      */
     public function destroy($id, Request $request)
     {
+        // conseguir usuario identificado
+        $user = $this->getIdentity($request);
+
         // conseguir el registro
-        $post = Post::find($id);
+        $post = Post::where('id', $id)->where('user_id', $user->sub)->first();
         
         if(!empty($post))
         {
@@ -250,5 +251,14 @@ class PostController extends Controller
  
 
         return response()->json($data, $data['code']);
+    }
+
+    private function getIdentity(Request $request)
+    {
+        $jwtAuth = new JwtAuth();
+        $token = $request->header('Authorization', null);
+        $user = $jwtAuth->checkToken($token, true);
+
+        return $user;
     }
 }
