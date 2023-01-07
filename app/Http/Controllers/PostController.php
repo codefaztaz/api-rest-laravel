@@ -199,11 +199,12 @@ class PostController extends Controller
              unset($params_array['user']);
  
              // actualizar el registro(categoria)
-             $post = Post::where('id', $id)->update($params_array);
+             $post = Post::where('id', $id)->updateOrCreate($params_array);
  
              $data = [
                  'code' => 200,
                  'status' =>'success',
+                 'post' => $post,
                  'post' => $params_array
              ];
  
@@ -221,8 +222,33 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+        // conseguir el registro
+        $post = Post::find($id);
+        
+        if(!empty($post))
+        {
+            // borrarlo
+            $post->delete();
+            // devolver algo
+            $data = [
+                'code' => 200,
+                'status' => 'success',
+                'post'  => $post
+            ];
+
+        }
+        else 
+        {
+            $data = [
+                'code' => 404,
+                'status' => 'error',
+                'message'  => 'el post no existe'
+            ];
+        }
+ 
+
+        return response()->json($data, $data['code']);
     }
 }
