@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Middleware\ApiAuthMiddleware;
+use App\Http\Middleware\cors;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,8 +39,8 @@ Route::get('/post/pruebas', [UserController::class, 'pruebas'] );
 // User controller routes
 
 Route::get('token', [UserController::class, 'showToken']);
-Route::post('api/register', [UserController::class, 'register']);
-Route::post('api/login',[UserController::class, 'login']);
+Route::post('api/register', [UserController::class, 'register'])->middleware(['cors']);
+Route::post('api/login',[UserController::class, 'login'])->middleware(['cors']);
 Route::put('api/user/update',[UserController::class, 'update']);
 Route::post('api/user/upload',[UserController::class, 'upload'])->middleware(['api.auth']);
 Route::get('api/user/avatar/{filename}', [UserController::class, 'getImage']);

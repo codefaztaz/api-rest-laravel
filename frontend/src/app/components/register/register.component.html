@@ -1,1 +1,52 @@
-<p>register works!</p>
+<div class="cold-md-12 mt-3">
+    <p>Registrate en nuestra plataforma para crear nuevas entradas y muchos más!!!</p>
+
+    <form class="col-md-5 ml-0 pl-0" [formGroup]="forma" (ngSubmit)="onSubmit(user)">
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" formControlName="name" [class.is-invalid]="nombreNoValido">
+            <small *ngIf="nombreNoValido" class="text-danger">
+                write the name
+            </small>
+        </div>
+
+        <div lass="form-group">
+            <label for="name">Apellidos</label>
+            <input type="text"  class="form-control" formControlName="surname" [class.is-invalid]="surnameNoValido">
+            <small *ngIf="surnameNoValido" class="text-danger">
+                write the name
+            </small>
+    </div>
+
+    <div class="form-group">
+            <label for="name">Email</label>
+            <input type="email"  class="form-control" formControlName="email" [class.is-invalid]="emailNoValido">
+            <small *ngIf="emailNoValido" class="text-danger">
+                write the name
+            </small>
+    </div>
+
+    <div class="form-group">
+            <label for="name">Password</label>
+            <input type="password"  class="form-control" formControlName="password" [class.is-invalid]="passwordNoValido">
+            <small *ngIf="passwordNoValido" class="text-danger">
+                write the name
+            </small>
+    </div>
+
+    <div class="form-group">
+           <input type="submit" value="Registrarme" class="btn btn-success">
+    </div>
+    </form>
+
+
+
+    <pre>
+        form state: {{ forma.valid }}
+        <br>
+        Status: {{ forma.status }}
+      </pre>
+
+
+</div>
+
