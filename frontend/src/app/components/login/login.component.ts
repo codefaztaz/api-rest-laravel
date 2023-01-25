@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -9,7 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   public user: User;
 	public status: string;
 	public token;
@@ -27,6 +27,12 @@ export class LoginComponent {
     this.createForm();
 	}
 
+
+  ngOnInit() 
+  {
+		// Se ejecuta siempre y cierra sesión solo cuando le llega el parametro sure por la url
+		this.logout();
+	}
 
 
   get emailNoValido() 
