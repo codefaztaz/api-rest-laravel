@@ -170,64 +170,48 @@ class UserController extends Controller
 
     // }
 
-    public function login(Request $request)
+    public function login(Request $request) 
     {
 
         $jwtAuth = new \JwtAuth();
 
-        // recibir datos por post
+        // Recibir datos por POST
         $json = $request->input('json', null);
         $params = json_decode($json);
         $params_array = json_decode($json, true);
-        var_dump($params_array);
 
-
-        // validar esos datos
+        // Validar esos datos
         $validate = \Validator::make($params_array, [
-
-            'email'   =>    'required|email',  
-            'password'=>    'required'
+                    'email' => 'required|email',
+                    'password' => 'required'
         ]);
 
-        if($validate->fails())
+        if ($validate->fails()) 
         {
+            // La validación ha fallado
             $signup = array(
-
                 'status' => 'error',
                 'code' => 404,
-                'message' => 'el usuario no se ha podido identificar',
-                'errors' =>$validate->errors()
+                'message' => 'El usuario no se ha podido identificar',
+                'errors' => $validate->errors()
             );
-        
-            
-        }
-        else
+        } 
+        else 
         {
-            // cifrar la password
+            // Cifrar la password
             $pwd = hash('sha256', $params->password);
 
-             // devolver token o datos
-             $signup =  $jwtAuth->signup($params->email, $pwd);
+            // Devolver token o datos
+            $signup = $jwtAuth->signup($params->email, $pwd);
 
-             if(!empty($params->gettoken))
-             {
-                $signup =  $jwtAuth->signup($params->email, $pwd, true);
-
-             }
-
+            if (!empty($params->gettoken)) 
+            {
+                $signup = $jwtAuth->signup($params->email, $pwd, true);
+            }
         }
 
+
         return response()->json($signup, 200);
-
-        
-
-       
-
-        //$email = ''
-        //
-
-
-        
     }
 
     public function update(Request $request)

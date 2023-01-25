@@ -56,6 +56,7 @@ export class LoginComponent {
 
  onSubmit(form)
  {
+    this.user = this.forma.value;
 		this._userService.signup(this.user).subscribe(
     {
         next: (response) =>
