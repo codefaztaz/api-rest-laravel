@@ -51,8 +51,8 @@ export class RegisterComponent implements OnInit {
     return this.forma.get('password').invalid && this.forma.get('password').touched
   }
 
-    createForm() 
-    {
+  createForm() 
+  {
 
       this.forma = this.fb.group({
         name : ['', Validators.required ],
@@ -64,7 +64,7 @@ export class RegisterComponent implements OnInit {
       });
     
     
-    }  
+  }  
 
   onSubmit(user)
   {

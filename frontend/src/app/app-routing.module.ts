@@ -9,6 +9,7 @@ import { ErrorComponent } from './components/error/error.component';
 const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'login', component: LoginComponent },
+  { path: 'logout/:sure', component: LoginComponent},
   { path: 'inicio', component: HomeComponent },
   { path: 'registro', component: RegisterComponent },
   { path: '**', component: ErrorComponent }
