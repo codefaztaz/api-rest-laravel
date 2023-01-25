@@ -19,89 +19,156 @@ class UserController extends Controller
         echo csrf_token();
     }
 
-    public function register(Request $request)
-    {
-        // recoger los datos del usuario por post
-        $json = $request->input('json', null);
-        $params = json_decode($json);//objeto
-        $params_array = json_decode($json,true);//array
-        var_dump($params_array);
+      public function register(Request $request) {
 
-        if(!empty($params) && (!empty($params_array)))
+        // Recorger los datos del usuario por post
+        $json = $request->input('json', null);
+        $params = json_decode($json); // objeto
+        $params_array = json_decode($json, true); // array 
+
+        if (!empty($params) && !empty($params_array)) 
         {
 
-            
-            // limpiar datos
+            // Limpiar datos
             $params_array = array_map('trim', $params_array);
 
-            // validar datos
+            // Validar datos
             $validate = \Validator::make($params_array, [
-
-                'name'    =>    'required|alpha',
-                'surname' =>    'required|alpha',
-                'email'   =>    'required|email|unique:users',  // comprobar si el usuario existe ya (duplicado)
-                'password'=>    'required'
+                        'name' => 'required|alpha',
+                        'surname' => 'required|alpha',
+                        'email' => 'required|email|unique:users',
+                        'password' => 'required'
             ]);
 
-            if($validate->fails())
+            if ($validate->fails()) 
             {
+                // La validación ha fallado
                 $data = array(
-
                     'status' => 'error',
                     'code' => 404,
-                    'message' => 'el usuario no se ha creado',
-                    'errors' =>$validate->errors()
+                    'message' => 'El usuario no se ha creado',
+                    'errors' => $validate->errors()
                 );
-            
-            }
-            else
+            } 
+            else 
             {
-                // cifrar contraseña
+                // Validación pasada correctamente
+                // Cifrar la contraseña
                 $pwd = hash('sha256', $params->password);
+
+                // Crear el usuario
+                $user = new User();
+                $user->name = $params_array['name'];
+                $user->surname = $params_array['surname'];
+                $user->email = $params_array['email'];
+                $user->password = $pwd;
+                $user->role = 'ROLE_USER';
+
+                // Guardar el usuario
+                $user->save();
+
+                $data = array(
+                    'status' => 'success',
+                    'code' => 200,
+                    'message' => 'El usuario se ha creado correctamente',
+                    'user' => $user
+                );
+            }
+        } 
+        else 
+        {
+            $data = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'Los datos enviados no son correctos'
+            );
+        }
+
+        return response()->json($data, $data['code']);
+    }
+    // public function register(Request $request)
+    // {
+    //     // recoger los datos del usuario por post
+    //     $json = $request->input('json', null);
+    //     $params = json_decode($json);//objeto
+    //     $params_array = json_decode($json,true);//array
+    //     var_dump($params_array);
+
+    //     if(!empty($params) && (!empty($params_array)))
+    //     {
+
+            
+    //         // limpiar datos
+    //         $params_array = array_map('trim', $params_array);
+
+    //         // validar datos
+    //         $validate = \Validator::make($params_array, [
+
+    //             'name'    =>    'required|alpha',
+    //             'surname' =>    'required|alpha',
+    //             'email'   =>    'required|email|unique:users',  // comprobar si el usuario existe ya (duplicado)
+    //             'password'=>    'required'
+    //         ]);
+
+    //         if($validate->fails())
+    //         {
+    //             $data = array(
+
+    //                 'status' => 'error',
+    //                 'code' => 404,
+    //                 'message' => 'el usuario no se ha creado',
+    //                 'errors' =>$validate->errors()
+    //             );
+            
+    //         }
+    //         else
+    //         {
+    //             // cifrar contraseña
+    //             $pwd = hash('sha256', $params->password);
 
               
 
-                // crear el usuario
-                $user = new User();
-                $user -> name = $params_array['name'];
-                $user -> surname = $params_array['surname'];
-                $user -> email = $params_array['email'];
-                $user -> password = $pwd;
-                $user -> role = 'ROLE_USER';
+    //             // crear el usuario
+    //             $user = new User();
+    //             $user -> name = $params_array['name'];
+    //             $user -> surname = $params_array['surname'];
+    //             $user -> email = $params_array['email'];
+    //             $user -> password = $pwd;
+    //             $user -> role = 'ROLE_USER';
 
-                $user->save();
+    //             $user->save();
         
-                $data = array(
+    //             $data = array(
 
-                    'status' => 'success',
-                    'code' => 200,
-                    'message' => 'el usuario  se ha creado correctamente',
-                    'user' => $user
+    //                 'status' => 'success',
+    //                 'code' => 200,
+    //                 'message' => 'el usuario  se ha creado correctamente',
+    //                 'user' => $user
                 
-                );
+    //             );
 
-            }
+    //         }
         
-        }
-        else
-        {
-            $data = array(
+    //     }
+    //     else
+    //     {
+    //         $data = array(
 
-                'status' => 'error',
-                'code' => 404,
-                'message' => 'los datos enviados no son correctos',
+    //             'status' => 'error',
+    //             'code' => 404,
+    //             'message' => 'los datos enviados no son correctos',
                 
-            );
+    //         );
         
 
 
-        }    
+    //     }    
 
 
-        return response()->json($data, $data['code']);
+    //     return response()->json($data, $data['code']);
 
 
-    }
+    // }
 
     public function login(Request $request)
     {

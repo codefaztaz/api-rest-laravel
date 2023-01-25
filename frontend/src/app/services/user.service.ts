@@ -9,8 +9,7 @@ import { global } from './global';
 })
 export class UserService {
   public url: string;
-  public params: any;
-  public user: User;
+ // public user: User;
 
   constructor(
     public _http:HttpClient
@@ -26,11 +25,16 @@ export class UserService {
   register(user):Observable<any>
   {
     let json = JSON.stringify(user);
+
     console.log(json);
-   let params = 'json='+json;
+    let params = 'json='+json;
+    
+   
     console.log(params);
 
-    let headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+  let headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+   // let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    
     return this._http.post(this.url+'register', params, {headers:headers});
   }
 
@@ -44,10 +48,11 @@ export class UserService {
       console.log(user);
 
       let json = JSON.stringify(user);
-      let params = 'json='+json; 
+      let params = json; 
       console.log(params);
       let headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
-      return this._http.post(this.url+'login/', params, {headers:headers});     
+      
+      return this._http.post(this.url+'login', params, {headers:headers});     
   }
   
   
