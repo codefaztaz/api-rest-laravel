@@ -4,6 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { HttpClient } from '@angular/common/http';
+import { global } from '../../services/global';
 
 @Component({
   selector: 'app-user-edit',
@@ -18,6 +19,8 @@ export class UserEditComponent implements OnInit {
   public token;
 	public identity;
   public id;
+  public url;
+ 
 
   constructor(
     private fb: FormBuilder,
@@ -33,10 +36,23 @@ export class UserEditComponent implements OnInit {
     this.identity = this._userService.getIdentity();
     console.log("identity", this.identity.sub);
     this.token = this._userService.getToken();
+    this.url = global.url;
 
     // rellenar objeto usuario
     //this.forma = this.identity;
     this.getUser();
+    // Rellenar objeto usuario
+    		// Rellenar objeto usuario
+		this.user = new User(
+			this.identity.sub, 
+			this.identity.name,
+			this.identity.surname, 
+			this.identity.role, 
+			this.identity.email, '', 
+			this.identity.description,
+			this.identity.image
+		);
+	
 
 
 
@@ -100,12 +116,12 @@ export class UserEditComponent implements OnInit {
           else
           {
             this.user = this.identity;
-          //  this.forma.controls['_id'].setValue(response.user.sub);
+           // this.forma.controls['sub'].setValue(response.user.sub);
             this.forma.controls['name'].setValue(response.user.name);
             this.forma.controls['surname'].setValue(response.user.surname);
             this.forma.controls['email'].setValue(response.user.email);
             this.forma.controls['description'].setValue(response.user.description);
-            this.forma.controls['image'].setValue(response.user.image);
+           // this.forma.controls['image'].setValue(response.user.image);
           
          
         
@@ -117,8 +133,35 @@ export class UserEditComponent implements OnInit {
   
   onSubmit(user)
   {
+    this.user = this.forma.value;
+    this._userService.update(this.token, this.user).subscribe(
+    {
 
-  }
+      
+		  next:	response => 
+      {
+        console.log("estoy aqui");
+				
+
+					this.identity = this.user;
+          this.identity = this._userService.getIdentity();
+          this.getUser();
+					localStorage.setItem('identity', JSON.stringify(this.identity));
+
+			
+			},
+      error: (error) =>
+      {
+				//this.status = 'error';
+				//console.log(<any>error);
+			}
+
+    });
+		
+
+    }
+    
+  
 
 
 }
