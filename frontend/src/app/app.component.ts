@@ -12,6 +12,7 @@ export class AppComponent implements OnInit, DoCheck {
   public token;
 	public identity;
   public url;
+  public id;
 
   constructor
   (
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit, DoCheck {
   ngOnInit()
   {
     console.log('Webapp cargada correctamente :)');
+   // this.identity = this._userService.getIdentity();
   
   }
 
@@ -37,8 +39,8 @@ export class AppComponent implements OnInit, DoCheck {
 
   loadUser()
   {
-    this.identity = this._userService.getIdentity();
-    this.token = this._userService.getToken();
+      this.identity = this._userService.getIdentity();
+      this.token = this._userService.getToken();
   }
 
 }

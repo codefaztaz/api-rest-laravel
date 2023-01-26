@@ -6,7 +6,15 @@
 		El registro se ha completado correctamente, <a [routerLink]="['/login']">logeate aquí</a>
 	</div> -->
 
+
     <form class="col-md-5 ml-0 pl-0" [formGroup]="forma" (ngSubmit)="onSubmit(user)">
+        <div class="form-group">
+         
+            <input type="hidden" class="form-control" formControlName="id" >
+            
+        </div>
+
+   
         <div class="form-group">
             <label for="name">Nombre</label>
             <input type="text" class="form-control" formControlName="name" [class.is-invalid]="nombreNoValido">

@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit,DoCheck} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { User } from '../../models/user';
@@ -34,16 +34,15 @@ export class UserEditComponent implements OnInit {
     this.user = new User(1,'','','ROLE_USER', '','','','');
     this.createForm();
     this.identity = this._userService.getIdentity();
+    console.log("identity prueba", this.identity);
     console.log("identity", this.identity.sub);
     this.token = this._userService.getToken();
     this.url = global.url;
 
-    // rellenar objeto usuario
-    //this.forma = this.identity;
+    
     this.getUser();
-    // Rellenar objeto usuario
-    		// Rellenar objeto usuario
-		this.user = new User(
+   
+    this.user = new User(
 			this.identity.sub, 
 			this.identity.name,
 			this.identity.surname, 
@@ -52,14 +51,17 @@ export class UserEditComponent implements OnInit {
 			this.identity.description,
 			this.identity.image
 		);
-	
+    console.log('user mierda',this.user);
+
 
 
 
   }
 
   ngOnInit(): void {
+    this.identity = this._userService.getIdentity();
     
+
   }
 
   get nombreNoValido() 
@@ -86,6 +88,7 @@ export class UserEditComponent implements OnInit {
   {
 
       this.forma = this.fb.group({
+        id : ['', ],
         name : ['', Validators.required ],
         surname : ['', Validators.required ],
         email : ['', [Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
@@ -115,15 +118,16 @@ export class UserEditComponent implements OnInit {
    
           else
           {
-            this.user = this.identity;
-           // this.forma.controls['sub'].setValue(response.user.sub);
+           // this.user = this.identity;
+            console.log(this.user);
+            this.forma.controls['id'].setValue(response.user.id);
             this.forma.controls['name'].setValue(response.user.name);
             this.forma.controls['surname'].setValue(response.user.surname);
             this.forma.controls['email'].setValue(response.user.email);
             this.forma.controls['description'].setValue(response.user.description);
            // this.forma.controls['image'].setValue(response.user.image);
           
-         
+    
         
           }
         }
@@ -133,6 +137,7 @@ export class UserEditComponent implements OnInit {
   
   onSubmit(user)
   {
+    
     this.user = this.forma.value;
     this._userService.update(this.token, this.user).subscribe(
     {
@@ -140,13 +145,30 @@ export class UserEditComponent implements OnInit {
       
 		  next:	response => 
       {
-        console.log("estoy aqui");
-				
+        console.log("estoy aki");
+          
+       
 
-					this.identity = this.user;
-          this.identity = this._userService.getIdentity();
-          this.getUser();
-					localStorage.setItem('identity', JSON.stringify(this.identity));
+        this.user.id =  this.forma.controls['id'].value;
+        this.user.name = this.forma.controls['name'].value;
+        this.user.surname = this.forma.controls['surname'].value;
+        this.user.email = this.forma.controls['email'].value;
+        this.user.description = this.forma.controls['description'].value;
+       // this.user.name = this.forma.controls['name'].value;
+        
+
+       this.getUser();
+
+        this.identity = this.user;
+        localStorage.setItem('identity', JSON.stringify(this.identity));
+       
+        //localStorage.setItem('identity', JSON.stringify(this.identity));
+   
+         
+
+       
+          
+					
 
 			
 			},

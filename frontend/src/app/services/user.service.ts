@@ -16,7 +16,7 @@ export class UserService {
     public _http:HttpClient
   ) {
       this.url = global.url;
-      this.identity = this.getIdentity();
+     this.identity = this.getIdentity();
    }
 
   terst()
@@ -62,6 +62,7 @@ export class UserService {
     let json = JSON.stringify(user);
 		let params = "json="+json;
     console.log(params);
+  
 
 		let headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
 									   .set('Authorization', token);
@@ -74,12 +75,11 @@ export class UserService {
   {
     
 
-    
    // let json = JSON.stringify(user);
     let id_user= this.getIdentity();
 
-    let params = id_user.sub;
-    console.log(id_user);
+    let params = id_user.id;
+   // console.log(id_user);
     console.log(params);
     
     return this._http.get(this.url+'user/detail/' + params);     
