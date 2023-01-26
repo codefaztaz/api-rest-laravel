@@ -3,7 +3,10 @@
     <p>Modifica tus datos personales de usuario</p>
 
     <!-- <div class="alert alert-success col-md-5 mt-3" *ngIf="status == 'success'">
-		El registro se ha completado correctamente, <a [routerLink]="['/login']">logeate aquí</a>
+		El registro se ha completado correctamente
+
+    <div class="alert alert-danger col-md-5" *ngIf="status == 'error'">
+		El registro no se ha completado, vuelve a intentarlo mas tarde
 	</div> -->
 
 
@@ -41,7 +44,7 @@
 
     <div class="form-group">
             <label for="name">biografia</label>
-            <textarea type="text"  class="form-control" formControlName="description" [class.is-invalid]="descriptionNoValido"></textarea>
+            <textarea [froalaEditor]="froala_options" type="text"  class="form-control" formControlName="description" [class.is-invalid]="descriptionNoValido"></textarea>
             <small *ngIf="descriptionNoValido" class="text-danger">
                 write the description
             </small>

@@ -20,6 +20,16 @@ export class UserEditComponent implements OnInit {
 	public identity;
   public id;
   public url;
+
+
+  public froala_options: Object = {
+    charCounterCount: true,
+    language: 'es',
+    toolbarButtons: ['bold', 'italic', 'underline', 'paragraphFormat'],
+    toolbarButtonsXS: ['bold', 'italic', 'underline', 'paragraphFormat'],
+    toolbarButtonsSM: ['bold', 'italic', 'underline', 'paragraphFormat'],
+    toolbarButtonsMD: ['bold', 'italic', 'underline', 'paragraphFormat'],
+};
  
 
   constructor(
