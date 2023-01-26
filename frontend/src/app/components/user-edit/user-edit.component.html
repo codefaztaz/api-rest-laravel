@@ -1,15 +1,10 @@
 <div class="cold-md-12 mt-3">
 
-    <p>Registrate en nuestra plataforma para crear nuevas entradas y muchos más!!!</p>
+    <p>Modifica tus datos personales de usuario</p>
 
-    <div class="alert alert-success col-md-5 mt-3" *ngIf="status == 'success'">
+    <!-- <div class="alert alert-success col-md-5 mt-3" *ngIf="status == 'success'">
 		El registro se ha completado correctamente, <a [routerLink]="['/login']">logeate aquí</a>
-	</div>
-
-    <div class="alert alert-danger col-md-5" *ngIf="status == 'error'">
-		El registro no se ha completado, vuelve a intentarlo mas tarde
-	</div>
-
+	</div> -->
 
     <form class="col-md-5 ml-0 pl-0" [formGroup]="forma" (ngSubmit)="onSubmit(user)">
         <div class="form-group">
@@ -37,15 +32,20 @@
     </div>
 
     <div class="form-group">
-            <label for="name">Password</label>
-            <input type="password"  class="form-control" formControlName="password" [class.is-invalid]="passwordNoValido">
-            <small *ngIf="passwordNoValido" class="text-danger">
-                write the name
+            <label for="name">biografia</label>
+            <textarea type="text"  class="form-control" formControlName="description" [class.is-invalid]="descriptionNoValido"></textarea>
+            <small *ngIf="descriptionNoValido" class="text-danger">
+                write the description
             </small>
     </div>
 
     <div class="form-group">
-           <input type="submit" value="Registrarme" class="btn btn-success">
+        <label for="name">avatar</label>
+        <input type="file" name="image" class="form-control"/>
+    </div>
+
+    <div class="form-group">
+           <input type="submit" value="Actualizar" class="btn btn-success">
     </div>
     </form>
 
@@ -59,4 +59,3 @@
 
 
 </div>
-

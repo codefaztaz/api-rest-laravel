@@ -16,6 +16,7 @@ export class UserService {
     public _http:HttpClient
   ) {
       this.url = global.url;
+      this.identity = this.getIdentity();
    }
 
   terst()
@@ -56,6 +57,20 @@ export class UserService {
       return this._http.post(this.url+'login', params, {headers:headers});     
   }
 
+  getUser(id):Observable<any>
+  {
+    
+
+    
+   // let json = JSON.stringify(user);
+    let id_user= this.getIdentity();
+
+    let params = id_user.sub;
+    console.log(id_user);
+    console.log(params);
+    
+    return this._http.get(this.url+'user/detail/' + params);     
+  }
   getIdentity()
   {
 		let identity = JSON.parse(localStorage.getItem('identity'));
