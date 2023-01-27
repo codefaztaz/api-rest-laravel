@@ -52,7 +52,11 @@
 
     <div class="form-group">
         <label for="name">avatar</label>
-        <input type="file" name="image" class="form-control"/>
+        <angular-file-uploader
+          [config]="afuConfig"
+         
+          (ApiResponse)="avatarUpload($event)">
+        </angular-file-uploader>
     </div>
 
     <div class="form-group">
